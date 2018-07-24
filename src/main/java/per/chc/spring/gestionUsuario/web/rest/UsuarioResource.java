@@ -54,7 +54,7 @@ public class UsuarioResource {
 
         //Pregntar si no sería mejor insertar esta url desde un archivo en propiedades, preguntar para que se usa el %s
         String location = String.format("http://localhost:8089/usuario/%s",result.getIdUsuario());
-
+        // Clase que nos permite recibir una respuesta on la URI de la localización.
         HttpHeaders httpHeaders = new HttpHeaders();
         httpHeaders.setLocation(new URI(location));
         return new ResponseEntity(httpHeaders,HttpStatus.CREATED);
@@ -66,5 +66,15 @@ public class UsuarioResource {
     public ResponseEntity<UsuarioDTO> recuperarUsuarioPorId(@PathVariable(value = "idUsuario") Long idUsuario){
 
         return ResponseEntity.ok(usuarioService.getUsuario(idUsuario));
+    }
+    @RequestMapping(value = "usuario/{user}/{pass}", method = RequestMethod.GET)
+    public ResponseEntity<UsuarioDTO> recuperarUsuarioRegistrado (@PathVariable String user, @PathVariable String pass){
+        UsuarioDTO usuarioDTO = usuarioService.getUsuario(user, pass);
+        return ResponseEntity.ok(usuarioDTO);
+    }
+    @RequestMapping(value = "usuario/{idUsuario}",method = RequestMethod.DELETE)
+    public  ResponseEntity<String> eliminarUsuarioYTodosSusProductos(@PathVariable Long idUsuario){
+        usuarioService.eliminarUsuario(idUsuario);
+        return ResponseEntity.ok("Todo Correcto");
     }
 }

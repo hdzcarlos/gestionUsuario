@@ -11,13 +11,7 @@ import per.chc.spring.gestionUsuario.entity.UsuarioEntity;
  */
 @Repository
 public interface IUsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
-    //@Query("SELECT * FORM usuario WHERE user = :user AND pass = :pass")
+   @Query(value = "SELECT * FROM usuario WHERE user = :user AND pass = :pass",nativeQuery = true)
+   UsuarioEntity findByUsuarioEntityByUserAndPass (@Param("user") String user, @Param("pass") String pass);
 
-    /**
-     * Metodo que busca un UsuarioEntity dando su user y pass
-     * @param user
-     * @param pass
-     * @return
-     */
-    //UsuarioEntity findUsuarioEntitybyUserAndPass(@Param("user") String user,@Param("pass") String pass);
 }

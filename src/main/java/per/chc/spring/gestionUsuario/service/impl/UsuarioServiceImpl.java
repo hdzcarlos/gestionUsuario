@@ -3,6 +3,7 @@ package per.chc.spring.gestionUsuario.service.impl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import per.chc.spring.gestionUsuario.entity.UsuarioEntity;
+import per.chc.spring.gestionUsuario.feign.ProductoFeign;
 import per.chc.spring.gestionUsuario.repository.IUsuarioRepository;
 import per.chc.spring.gestionUsuario.service.IUsuarioService;
 import per.chc.spring.gestionUsuario.web.dto.UsuarioDTO;
@@ -18,6 +19,8 @@ public class UsuarioServiceImpl implements IUsuarioService {
      */
     @Autowired
     IUsuarioRepository usuarioRepository;
+    @Autowired
+    ProductoFeign productoFeign;
 
     /**
      * Metodo que crea un nuevo usuario en base de datos , autogenerando un ID, y pasandole por parametros user y pass
@@ -65,6 +68,8 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public UsuarioDTO eliminarUsuario(Long idUsuario) {
+        usuarioRepository.deleteById(idUsuario);
+        productoFeign.eliminarProductoByIdUsuario(idUsuario);
         return null;
     }
 }
