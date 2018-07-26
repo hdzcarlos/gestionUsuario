@@ -2,6 +2,7 @@ package per.chc.spring.gestionUsuario.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 import per.chc.spring.gestionUsuario.entity.UsuarioEntity;
 import per.chc.spring.gestionUsuario.feign.ProductoFeign;
 import per.chc.spring.gestionUsuario.repository.IUsuarioRepository;
@@ -19,6 +20,7 @@ public class UsuarioServiceImpl implements IUsuarioService {
      */
     @Autowired
     IUsuarioRepository usuarioRepository;
+
     @Autowired
     ProductoFeign productoFeign;
 
@@ -68,8 +70,16 @@ public class UsuarioServiceImpl implements IUsuarioService {
 
     @Override
     public UsuarioDTO eliminarUsuario(Long idUsuario) {
-        usuarioRepository.deleteById(idUsuario);
-        productoFeign.eliminarProductoByIdUsuario(idUsuario);
-        return null;
+       // usuarioRepository.deleteById(idUsuario);
+      //  productoFeign.eliminarProductoByIdUsuario(idUsuario);
+       new RestTemplate().getForObject(
+               "http://localhost:8765/ms-gestion-producto/producto/{idUsuario}",
+               Void.class,
+               idUsuario);
+
+        return new UsuarioDTO();
+    }
+    private String eliminarUsuarioDefault(Long idUsuario){
+        return "Esparando a solucionar errores";
     }
 }
